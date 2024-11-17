@@ -1,0 +1,46 @@
+<sdf version='1.5'>
+  <model name='iris_irlock'>
+
+    <include>
+      <uri>model://iris</uri>
+    </include>
+
+    <include>
+      <uri>model://lidar</uri>
+      <pose>-0.12 0 0 0 0 0</pose>
+    </include>
+    <joint name="lidar_joint" type="fixed">
+      <child>lidar::link</child>
+      <parent>iris::base_link</parent>
+    </joint>
+
+    <include>
+      <uri>model://irlock</uri>
+      <pose>0 0 0 0 1.5708 0</pose>
+    </include>
+    <joint name="irlock_joint" type="fixed">
+      <child>camera::link</child>
+      <parent>iris::base_link</parent>
+    </joint>
+
+    <plugin name="GstCameraPlugin" filename="libgazebo_gst_camera_plugin.so">
+      <robotNamespace>iris_irlock</robotNamespace>
+      <udpHost>127.0.0.1</udpHost>
+      <udpPort>5600</udpPort>
+    </plugin>
+
+    <plugin name="CameraManagerPlugin" filename="libgazebo_camera_manager_plugin.so">
+      <robotNamespace>iris_irlock</robotNamespace>
+      <interval>1</interval>
+      <width>3840</width>
+      <height>2160</height>
+      <maximum_zoom>8.0</maximum_zoom>
+      <video_uri>udp://127.0.0.1:5600</video_uri>
+      <system_id>1</system_id>
+      <cam_component_id>100</cam_component_id>
+      <mavlink_cam_udp_port>14530</mavlink_cam_udp_port>
+    </plugin>
+
+  </model>
+</sdf>
+
